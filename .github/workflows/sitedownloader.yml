@@ -20,15 +20,16 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y wget
 
       - name: Download full Neocities site
-        run: |
-          mkdir -p site
-          wget --mirror \
-               --convert-links \
-               --adjust-extension \
-               --page-requisites \
-               --no-parent \
-               --directory-prefix=site \
-               ${{ github.event.inputs.url }}
+  run: |
+    mkdir -p site
+    wget --mirror \
+         --convert-links \
+         --adjust-extension \
+         --page-requisites \
+         --no-parent \
+         -e robots=off \
+         --directory-prefix=site \
+         ${{ github.event.inputs.url }}
 
       - name: List downloaded files (debug)
         run: ls -R site
