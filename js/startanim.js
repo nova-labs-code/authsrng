@@ -1,6 +1,5 @@
 (function () {
   window.addEventListener("DOMContentLoaded", () => {
-    /* ========= DOM ========= */
     const container = document.createElement("div");
     container.className = "entry-container";
     container.innerHTML = `
@@ -12,52 +11,47 @@
     const line = container.querySelector(".center-line");
     const text = container.querySelector(".tap-text");
 
-    /* ========= SEQUENCE ========= */
     function startSequence() {
       text.style.display = "none";
 
-      // STEP 1 — horizontal expand
+      // STEP 1: horizontal
       line.classList.add("expand-horizontal");
 
-      line.addEventListener(
-        "transitionend",
-        function onHorizontal(e) {
-          if (e.propertyName !== "width") return;
-          line.removeEventListener("transitionend", onHorizontal);
+      line.addEventListener("transitionend", function step1(e) {
+        if (e.target !== line || e.propertyName !== "width") return;
+        line.removeEventListener("transitionend", step1);
 
-          // STEP 2 — vertical expand
-          line.classList.add("expand-vertical");
+        // STEP 2: vertical
+        line.classList.add("expand-vertical");
 
-          line.addEventListener(
-            "transitionend",
-            function onVertical(e) {
-              if (e.propertyName !== "height") return;
-              line.removeEventListener("transitionend", onVertical);
+        line.addEventListener("transitionend", function step2(e) {
+          if (e.target !== line || e.propertyName !== "height") return;
+          line.removeEventListener("transitionend", step2);
 
-              // STEP 3 — fade line
-              line.classList.add("fade-line");
+          // STEP 3: fade line
+          line.classList.add("fade-line");
 
-              line.addEventListener(
-                "animationend",
-                function onFade() {
-                  line.removeEventListener("animationend", onFade);
+          line.addEventListener("animationend", function step3() {
+            line.removeEventListener("animationend", step3);
 
-                  // STEP 4 — fade out container
-                  container.style.opacity = "0";
-                  container.addEventListener(
-                    "transitionend",
-                    () => container.remove(),
-                    { once: true }
-                  );
-                }
-              );
-            }
-          );
-        }
-      );
+            // STEP 4: fade container
+            requestAnimationFrame(() => {
+              container.style.opacity = "0";
+            });
+
+            container.addEventListener(
+              "transitionend",
+              function cleanup(e) {
+                if (e.target !== container || e.propertyName !== "opacity") return;
+                container.remove();
+              },
+              { once: true }
+            );
+          });
+        });
+      });
     }
 
-    /* ========= INPUT ========= */
     container.addEventListener("click", startSequence, { once: true });
     container.addEventListener("touchstart", startSequence, { once: true });
   });
