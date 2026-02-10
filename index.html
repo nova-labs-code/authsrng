@@ -190,7 +190,7 @@
      </div>
      <div class="lazy visible" data-observed="true" id="dailyContainer">
       <div id="dailyStatus">
-       daily available · current streak: 0
+       daily available Â· current streak: 0
       </div>
       <button id="dailyBtn">
        claim daily
@@ -198,7 +198,7 @@
      </div>
      <div class="lazy visible" data-observed="true" id="weeklyContainer">
       <div id="weeklyStatus">
-       weekly reward available · streak: 0
+       weekly reward available Â· streak: 0
       </div>
       <button id="weeklyBtn">
        claim weekly
@@ -216,13 +216,13 @@
         </span>
         <select id="sortSelect">
          <option value="rare">
-          rarest → common
+          rarest â common
          </option>
          <option value="common">
-          common → rarest
+          common â rarest
          </option>
          <option value="alpha">
-          a → z
+          a â z
          </option>
         </select>
        </div>
@@ -730,13 +730,13 @@
      <!-- POTIONS SECTION -->
      <div class="potion-section">
       <div class="potion-section-title">
-       🧪 potions
+       ð§ª potions
       </div>
       <div class="potion-grid">
        <!-- 2x Luck -->
        <div class="potion-item" data-potion="luck2x">
         <div class="potion-emoji">
-         ✨
+         â¨
         </div>
         <div class="potion-name">
          2x luck
@@ -763,7 +763,7 @@
        <!-- 4x Luck -->
        <div class="potion-item" data-potion="luck4x">
         <div class="potion-emoji">
-         💫
+         ð«
         </div>
         <div class="potion-name">
          4x luck
@@ -790,7 +790,7 @@
        <!-- 10x Luck -->
        <div class="potion-item" data-potion="luck10x">
         <div class="potion-emoji">
-         🌟
+         ð
         </div>
         <div class="potion-name">
          10x luck
@@ -817,7 +817,7 @@
        <!-- 50x Luck -->
        <div class="potion-item" data-potion="luck50x">
         <div class="potion-emoji">
-         ⭐
+         â­
         </div>
         <div class="potion-name">
          50x luck
@@ -844,7 +844,7 @@
        <!-- 100x Luck -->
        <div class="potion-item" data-potion="luck100x">
         <div class="potion-emoji">
-         🔥
+         ð¥
         </div>
         <div class="potion-name">
          100x luck
@@ -871,7 +871,7 @@
        <!-- 150x Luck -->
        <div class="potion-item" data-potion="luck150x">
         <div class="potion-emoji">
-         💥
+         ð¥
         </div>
         <div class="potion-name">
          150x luck
@@ -898,7 +898,7 @@
        <!-- 250x Luck -->
        <div class="potion-item" data-potion="luck250x">
         <div class="potion-emoji">
-         ⚡
+         â¡
         </div>
         <div class="potion-name">
          250x luck
@@ -925,7 +925,7 @@
        <!-- 300x Luck (OMEGA) -->
        <div class="potion-item" data-potion="luck300x">
         <div class="potion-emoji">
-         💎
+         ð
         </div>
         <div class="potion-name">
          OMEGA LUCK
@@ -952,7 +952,7 @@
        <!-- Duplicate Potion -->
        <div class="potion-item" data-potion="duplicate">
         <div class="potion-emoji">
-         🎭
+         ð­
         </div>
         <div class="potion-name">
          duplicate
@@ -1007,7 +1007,7 @@
        throw points in and make a wish...
       </div>
       <div class="well-visual" id="wellVisual">
-       🌊
+       ð
       </div>
       <div class="well-input-container">
        <input class="well-input" id="wellInput" min="1" placeholder="enter points..." type="number"/>
@@ -1126,16 +1126,16 @@
         none
        </option>
        <option value="winter">
-        winter ❄️
+        winter âï¸
        </option>
        <option value="spring">
-        spring 🌸
+        spring ð¸
        </option>
        <option value="summer">
-        summer ☀️
+        summer âï¸
        </option>
        <option value="fall">
-        fall 🍁
+        fall ð
        </option>
       </select>
       <label style="display: block; margin-top: 12px;">
@@ -1404,13 +1404,13 @@
     </div>
    </div>
    <button class="page-arrow left" disabled="" id="prevPage">
-    ‹
+    â¹
    </button>
    <button class="page-arrow right" id="nextPage">
-    ›
+    âº
    </button>
    <div class="swipe-indicator show">
-    ← swipe to navigate →
+    â swipe to navigate â
    </div>
    <script src="js/main.js">
    </script>
@@ -1449,7 +1449,7 @@
        rarity index
       </h3>
       <button class="index-close" id="indexClose">
-       ×
+       Ã
       </button>
      </div>
      <div class="index-stats" id="indexStats">
@@ -1594,10 +1594,10 @@
     if (!validSeasons.includes(season)) return;
 
     const emojiMap = {
-      winter: "❄️",
-      spring: "🌸",
-      summer: "☀️",
-      fall: "🍁"
+      winter: "âï¸",
+      spring: "ð¸",
+      summer: "âï¸",
+      fall: "ð"
     };
     const emoji = emojiMap[season];
 
@@ -1872,7 +1872,7 @@ if (settings.dev) {
       const el = document.querySelector(selector);
       if (el) {
         const visible = window.getComputedStyle(el).display !== 'none';
-        output += `<span class="dev-dom-tag">${name}:</span> <span class="${visible ? 'dev-success' : 'dev-warning'}">${visible ? '✓' : '✗'}</span> `;
+        output += `<span class="dev-dom-tag">${name}:</span> <span class="${visible ? 'dev-success' : 'dev-warning'}">${visible ? 'â' : 'â'}</span> `;
       }
     });
     output += '</div>';
@@ -2659,9 +2659,9 @@ function handleSwipe() {
     if (!envelope || !envelope.p || !envelope.h || !envelope.t)
       return { error: 'invalid format' };
     if (envelope.t !== expectedTag)
-      return { error: 'wrong type — expected ' + expectedTag };
+      return { error: 'wrong type â expected ' + expectedTag };
     if (hash(envelope.p) !== envelope.h)
-      return { error: 'tampered or corrupted — blocked' };
+      return { error: 'tampered or corrupted â blocked' };
     let bundle;
     try { bundle = JSON.parse(envelope.p); } catch(e) {
       return { error: 'payload not valid json' };
@@ -2820,6 +2820,8 @@ function handleSwipe() {
   <div class="entry-container">
    <div class="center-line">
    </div>
+   <div class="tap-text">
+    click/tap to wake up
    </div>
   </div>
  </body>
