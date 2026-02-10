@@ -1,5 +1,4 @@
-( function(){var s=document.createElement('script');s.src='legacy-polyfills.js';s.async=false;document.head.appendChild(s);})();
- 
+(function(){var s=document.createElement('script');s.src='legacy-polyfills.js';s.async=false;document.head.appendChild(s);})();
 
 window.addEventListener("DOMContentLoaded", () => {
   const style = document.createElement("style");
@@ -105,4 +104,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
   container.addEventListener("click", startSequence, { once: true });
   container.addEventListener("touchstart", startSequence, { once: true });
-}); *\
+});
