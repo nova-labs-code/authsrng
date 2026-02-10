@@ -11,45 +11,50 @@
     const line = container.querySelector(".center-line");
     const text = container.querySelector(".tap-text");
 
+    let finished = false;
+
+    function cleanup() {
+      if (finished) return;
+      finished = true;
+
+      container.style.pointerEvents = "none";
+      container.style.opacity = "0";
+
+      setTimeout(() => {
+        container.remove();
+      }, 1300); // matches CSS fade
+    }
+
     function startSequence() {
       text.style.display = "none";
 
-      // STEP 1: horizontal
+      // horizontal
       line.classList.add("expand-horizontal");
 
-      line.addEventListener("transitionend", function step1(e) {
-        if (e.target !== line || e.propertyName !== "width") return;
-        line.removeEventListener("transitionend", step1);
+      line.addEventListener("transitionend", function w(e) {
+        if (e.propertyName !== "width") return;
+        line.removeEventListener("transitionend", w);
 
-        // STEP 2: vertical
+        // vertical
         line.classList.add("expand-vertical");
 
-        line.addEventListener("transitionend", function step2(e) {
-          if (e.target !== line || e.propertyName !== "height") return;
-          line.removeEventListener("transitionend", step2);
+        line.addEventListener("transitionend", function h(e) {
+          if (e.propertyName !== "height") return;
+          line.removeEventListener("transitionend", h);
 
-          // STEP 3: fade line
+          // fade line
           line.classList.add("fade-line");
 
-          line.addEventListener("animationend", function step3() {
-            line.removeEventListener("animationend", step3);
-
-            // STEP 4: fade container
-            requestAnimationFrame(() => {
-              container.style.opacity = "0";
-            });
-
-            container.addEventListener(
-              "transitionend",
-              function cleanup(e) {
-                if (e.target !== container || e.propertyName !== "opacity") return;
-                container.remove();
-              },
-              { once: true }
-            );
-          });
+          line.addEventListener(
+            "animationend",
+            () => cleanup(),
+            { once: true }
+          );
         });
       });
+
+      // 🔒 absolute failsafe (matches authsrng)
+      setTimeout(cleanup, 4000);
     }
 
     container.addEventListener("click", startSequence, { once: true });
