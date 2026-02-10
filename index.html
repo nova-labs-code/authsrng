@@ -64,7 +64,31 @@
   <script src="js/legacy-polyfills.js">
   </script>
   <style>
-   
+   .entry-container {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0e0e0e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 1.2s ease;
+    }
+
+    .tap-text {
+      position: absolute;
+      bottom: 8%;
+      color: #dcdcdc;
+      font-size: 0.9em;
+      font-family: monospace;
+      letter-spacing: 0.08em;
+      opacity: 0;
+      animation: fadein 1.5s ease forwards 0.8s, pulse 2s ease-in-out infinite 2.5s;
+      user-select: none;
+      text-transform: lowercase;
+    }
 
     @keyframes fadein {
       from { opacity: 0; transform: translateY(10px); }
