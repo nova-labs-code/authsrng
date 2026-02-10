@@ -1,0 +1,37 @@
+name: Download Neocities Site
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Website URL'
+        required: true
+        default: 'https://authsrng.neocities.org'
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install wget
+        run: sudo apt-get update && sudo apt-get install -y wget
+
+      - name: Download full Neocities site
+        run: |
+          mkdir site
+          wget --mirror \
+               --convert-links \
+               --adjust-extension \
+               --page-requisites \
+               --no-parent \
+               --directory-prefix=site \
+               ${{ github.event.inputs.url }}
+
+      - name: Upload site as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: authsrng-site
+          path: site
