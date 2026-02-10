@@ -1,142 +1,64 @@
 (function () {
-  // legacy polyfills
-  var s = document.createElement("script");
-  s.src = "legacy-polyfills.js";
-  s.async = false;
-  document.head.appendChild(s);
+  window.addEventListener("DOMContentLoaded", () => {
+    /* ========= DOM ========= */
+    const container = document.createElement("div");
+    container.className = "entry-container";
+    container.innerHTML = `
+      <div class="center-line"></div>
+      <div class="tap-text">click/tap to wake up</div>
+    `;
+    document.body.appendChild(container);
+
+    const line = container.querySelector(".center-line");
+    const text = container.querySelector(".tap-text");
+
+    /* ========= SEQUENCE ========= */
+    function startSequence() {
+      text.style.display = "none";
+
+      // STEP 1 — horizontal expand
+      line.classList.add("expand-horizontal");
+
+      line.addEventListener(
+        "transitionend",
+        function onHorizontal(e) {
+          if (e.propertyName !== "width") return;
+          line.removeEventListener("transitionend", onHorizontal);
+
+          // STEP 2 — vertical expand
+          line.classList.add("expand-vertical");
+
+          line.addEventListener(
+            "transitionend",
+            function onVertical(e) {
+              if (e.propertyName !== "height") return;
+              line.removeEventListener("transitionend", onVertical);
+
+              // STEP 3 — fade line
+              line.classList.add("fade-line");
+
+              line.addEventListener(
+                "animationend",
+                function onFade() {
+                  line.removeEventListener("animationend", onFade);
+
+                  // STEP 4 — fade out container
+                  container.style.opacity = "0";
+                  container.addEventListener(
+                    "transitionend",
+                    () => container.remove(),
+                    { once: true }
+                  );
+                }
+              );
+            }
+          );
+        }
+      );
+    }
+
+    /* ========= INPUT ========= */
+    container.addEventListener("click", startSequence, { once: true });
+    container.addEventListener("touchstart", startSequence, { once: true });
+  });
 })();
-
-window.addEventListener("DOMContentLoaded", () => {
-  /* ===================== STYLES ===================== */
-  const style = document.createElement("style");
-  style.textContent = `
-    .entry-container {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #0e0e0e;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      opacity: 1;
-      transition: opacity 1.2s ease;
-    }
-
-    .tap-text {
-      position: absolute;
-      bottom: 8%;
-      color: #dcdcdc;
-      font-size: 0.9em;
-      font-family: monospace;
-      letter-spacing: 0.08em;
-      opacity: 0;
-      animation: fadein 1.5s ease forwards 0.8s,
-                 pulse 2s ease-in-out infinite 2.5s;
-      user-select: none;
-      text-transform: lowercase;
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 0.6; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; }
-      50%      { opacity: 0.25; }
-    }
-
-    .center-line {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 1px;
-      height: 1px;
-      background: #dcdcdc;
-      transform: translate(-50%, -50%);
-      opacity: 0.8;
-      transition:
-        width 0.8s cubic-bezier(0.4,0,0.2,1),
-        height 0.8s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    .expand-horizontal {
-      width: 100%;
-    }
-
-    .expand-vertical {
-      height: 100%;
-    }
-
-    .fade-line {
-      animation: fade-line 0.6s ease forwards;
-    }
-
-    @keyframes fade-line {
-      from { opacity: 0.8; }
-      to   { opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  /* ===================== DOM ===================== */
-  const container = document.createElement("div");
-  container.className = "entry-container";
-  container.innerHTML = `
-    <div class="center-line"></div>
-    <div class="tap-text">click/tap to wake up</div>
-  `;
-  document.body.appendChild(container);
-
-  const line = container.querySelector(".center-line");
-  const text = container.querySelector(".tap-text");
-
-  /* ===================== SEQUENCE ===================== */
-  function startSequence() {
-    text.style.display = "none";
-
-    // STEP 1: horizontal expand
-    line.classList.add("expand-horizontal");
-
-    line.addEventListener(
-      "transitionend",
-      function stepWidth(e) {
-        if (e.propertyName !== "width") return;
-        line.removeEventListener("transitionend", stepWidth);
-
-        // STEP 2: vertical expand
-        line.classList.add("expand-vertical");
-
-        line.addEventListener(
-          "transitionend",
-          function stepHeight(e) {
-            if (e.propertyName !== "height") return;
-            line.removeEventListener("transitionend", stepHeight);
-
-            // STEP 3: fade line
-            line.classList.add("fade-line");
-
-            line.addEventListener(
-              "animationend",
-              function stepFade() {
-                line.removeEventListener("animationend", stepFade);
-
-                // STEP 4: fade container
-                container.style.opacity = "0";
-                container.addEventListener(
-                  "transitionend",
-                  () => container.remove(),
-                  { once: true }
-                );
-              }
-            );
-          }
-        );
-      }
-    );
-  }
-
-  container.addEventListener("click", startSequence, { once: true });
-  container.addEventListener("touchstart", startSequence, { once: true });
-});
