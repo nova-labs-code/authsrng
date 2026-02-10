@@ -17,43 +17,49 @@
       if (finished) return;
       finished = true;
 
-      container.style.pointerEvents = "none";
+      // Fade out the container AFTER the line animation ends
+      container.style.transition = "opacity 1.2s ease";
       container.style.opacity = "0";
 
-      setTimeout(() => {
-        container.remove();
-      }, 1300); // matches CSS fade
+      container.addEventListener(
+        "transitionend",
+        () => container.remove(),
+        { once: true }
+      );
     }
 
     function startSequence() {
       text.style.display = "none";
 
-      // horizontal
+      // STEP 1: horizontal expand
       line.classList.add("expand-horizontal");
 
-      line.addEventListener("transitionend", function w(e) {
+      line.addEventListener("transitionend", function stepWidth(e) {
         if (e.propertyName !== "width") return;
-        line.removeEventListener("transitionend", w);
+        line.removeEventListener("transitionend", stepWidth);
 
-        // vertical
+        // STEP 2: vertical expand
         line.classList.add("expand-vertical");
 
-        line.addEventListener("transitionend", function h(e) {
+        line.addEventListener("transitionend", function stepHeight(e) {
           if (e.propertyName !== "height") return;
-          line.removeEventListener("transitionend", h);
+          line.removeEventListener("transitionend", stepHeight);
 
-          // fade line
+          // STEP 3: fade line
           line.classList.add("fade-line");
 
           line.addEventListener(
             "animationend",
-            () => cleanup(),
+            () => {
+              // Now fade out the container AFTER line animation finishes
+              cleanup();
+            },
             { once: true }
           );
         });
       });
 
-      // 🔒 absolute failsafe (matches authsrng)
+      // Optional failsafe: in case events get skipped
       setTimeout(cleanup, 4000);
     }
 
